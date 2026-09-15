@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { getPreferredRecordingMimeType } from './recordingMimeType.js';
 import { getMicPermissionCopy } from './micPermissionCopy.js';
+import { detectPlatform } from './detectPlatform.js';
 
 const GRANTED_BEFORE_KEY = 'blurt:mic-granted-before';
 
@@ -14,6 +15,7 @@ export function RecordButton({
   mediaDevices = navigator.mediaDevices,
   MediaRecorderImpl = MediaRecorder,
   storage = window.localStorage,
+  platform = detectPlatform(),
 }) {
   const [state, setState] = useState('idle'); // idle | recording | permission-denied | silence
   const [permissionCopy, setPermissionCopy] = useState(null);
@@ -53,7 +55,7 @@ export function RecordButton({
       // getUserMedia rejecting is the only signal available here — can't
       // distinguish "denied" from "no mic present" from the error alone,
       // so this is necessarily the generic permission path.
-      setPermissionCopy(getMicPermissionCopy({ hasGrantedBefore, promptShownAgain: true }));
+      setPermissionCopy(getMicPermissionCopy({ hasGrantedBefore, promptShownAgain: true, platform }));
       setState('permission-denied');
     }
   }

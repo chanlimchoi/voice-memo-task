@@ -7,11 +7,19 @@
 // needed is one boolean — "has this device successfully granted mic access
 // before" — persisted locally. No new permissions, no privacy surface
 // beyond what recording already requires.
-export function getMicPermissionCopy({ hasGrantedBefore, promptShownAgain }) {
+// platform-gated per Honey's catch: the re-prompt line names iOS
+// specifically, so it must only show on iOS — it'd be false and
+// confusing on Android/Windows, which don't share this quirk (unverified
+// either way as of writing; treat as "no" until Pollen confirms otherwise,
+// since a wrong platform-specific claim is worse than the generic fallback).
+const PLATFORMS_WITH_REPROMPT_QUIRK = new Set(['ios']);
+
+export function getMicPermissionCopy({ hasGrantedBefore, promptShownAgain, platform }) {
   // Re-prompted after a prior successful grant — the iOS PWA quirk Pollen
   // flagged, not a genuine first-time ask. Naming *why* (iOS's behavior)
-  // keeps blame off the user and off us.
-  if (hasGrantedBefore && promptShownAgain) {
+  // keeps blame off the user and off us. Gated to platforms actually known
+  // to have this quirk so it doesn't misfire elsewhere.
+  if (hasGrantedBefore && promptShownAgain && PLATFORMS_WITH_REPROMPT_QUIRK.has(platform)) {
     return 'iOS asks for mic access each time you reopen this — one more tap and you’re set.';
   }
 

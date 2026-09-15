@@ -98,7 +98,7 @@ describe('RecordButton', () => {
     expect(await screen.findByRole('button', { name: 'Try again' })).toBeInTheDocument();
   });
 
-  test('a prior successful grant surfaces the iOS re-prompt copy on a later denial', async () => {
+  test('a prior successful grant surfaces the iOS re-prompt copy on a later denial, on iOS', async () => {
     const user = userEvent.setup();
     const storage = fakeStorage();
     storage.setItem('blurt:mic-granted-before', 'true');
@@ -108,10 +108,29 @@ describe('RecordButton', () => {
         mediaDevices={fakeMediaDevices({ shouldGrant: false })}
         MediaRecorderImpl={FakeMediaRecorder}
         storage={storage}
+        platform="ios"
       />,
     );
     await user.click(screen.getByRole('button'));
     expect(await screen.findByText(/ios asks for mic access each time/i)).toBeInTheDocument();
+  });
+
+  test('the same scenario on Android/Windows does not show the iOS-specific line (Honey/Pollen’s platform-gate catch)', async () => {
+    const user = userEvent.setup();
+    const storage = fakeStorage();
+    storage.setItem('blurt:mic-granted-before', 'true');
+    render(
+      <RecordButton
+        onRecorded={() => {}}
+        mediaDevices={fakeMediaDevices({ shouldGrant: false })}
+        MediaRecorderImpl={FakeMediaRecorder}
+        storage={storage}
+        platform="android"
+      />,
+    );
+    await user.click(screen.getByRole('button'));
+    expect(await screen.findByText(/turn it on in settings/i)).toBeInTheDocument();
+    expect(screen.queryByText(/ios asks for mic access/i)).not.toBeInTheDocument();
   });
 
   test('a zero-length recording shows the silence copy, distinct from permission-denied, and does not call onRecorded', async () => {
