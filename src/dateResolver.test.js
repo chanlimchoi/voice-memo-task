@@ -1,8 +1,6 @@
-'use strict';
-
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const { resolveDateRef } = require('./dateResolver');
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { resolveDateRef } from './dateResolver.js';
 
 // Tuesday, 2026-09-15 — the exact date that exposed the "due Friday" bug
 // in the hand-verified example (Claude said 2026-09-19, a Saturday).

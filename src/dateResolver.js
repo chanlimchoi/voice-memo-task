@@ -1,5 +1,3 @@
-'use strict';
-
 const WEEKDAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 function toISODate(date) {
@@ -20,7 +18,7 @@ function addDays(date, days) {
  *
  * Returns null for anything not confidently resolvable, rather than guessing.
  */
-function resolveDateRef(dateRef, { now = new Date() } = {}) {
+export function resolveDateRef(dateRef, { now = new Date() } = {}) {
   if (!dateRef) return null;
   const phrase = dateRef.trim().toLowerCase();
   const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
@@ -44,5 +42,3 @@ function resolveDateRef(dateRef, { now = new Date() } = {}) {
   // extractionPrompt.js. No silent invention of a date.
   return null;
 }
-
-module.exports = { resolveDateRef };

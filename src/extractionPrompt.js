@@ -1,9 +1,7 @@
-'use strict';
-
 // The LLM extracts *what was said*, never computes an actual calendar date.
 // Weekday/relative-date arithmetic is deterministic and lives in
 // dateResolver.js — see the "due Friday" bug this schema was changed to avoid.
-const EXTRACTION_PROMPT = `You are extracting action items from a personal voice memo transcript.
+export const EXTRACTION_PROMPT = `You are extracting action items from a personal voice memo transcript.
 The speaker was thinking out loud, not writing a formal list — extract
 only things they clearly intend to DO, not things they merely mentioned.
 
@@ -25,5 +23,3 @@ Transcript:
 """
 
 Respond with only a JSON array, no prose.`;
-
-module.exports = { EXTRACTION_PROMPT };

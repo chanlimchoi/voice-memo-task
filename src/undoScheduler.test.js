@@ -1,8 +1,6 @@
-'use strict';
-
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const { createUndoScheduler } = require('./undoScheduler');
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createUndoScheduler } from './undoScheduler.js';
 
 test('fires onFinalize for an id once its delay elapses', (t) => {
   t.mock.timers.enable({ apis: ['setTimeout'] });

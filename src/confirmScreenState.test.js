@@ -1,8 +1,6 @@
-'use strict';
-
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const {
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
   buildConfirmState,
   isConfirmStateEmpty,
   editTask,
@@ -11,7 +9,7 @@ const {
   finalizeRemovals,
   finalizeRemoval,
   confirm,
-} = require('./confirmScreenState');
+} from './confirmScreenState.js';
 
 const TUESDAY = new Date('2026-09-15T12:00:00Z');
 const extracted = [

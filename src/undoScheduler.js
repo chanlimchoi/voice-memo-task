@@ -1,15 +1,13 @@
-'use strict';
-
 // 6s: between Pollen's WhatsApp-delete precedent (5s) and Honey's note that
 // an actionable task warrants a touch more room than a plain message delete.
-const DEFAULT_DELAY_MS = 6000;
+export const DEFAULT_DELAY_MS = 6000;
 
 /**
  * Tracks one undo-window timer per swiped item, independent of React so it
  * can be unit tested without a DOM. `onFinalize(id)` fires once per id, only
  * if that id's timer isn't cancelled first via cancel(id).
  */
-function createUndoScheduler({ onFinalize, delayMs = DEFAULT_DELAY_MS, setTimeoutFn = setTimeout, clearTimeoutFn = clearTimeout }) {
+export function createUndoScheduler({ onFinalize, delayMs = DEFAULT_DELAY_MS, setTimeoutFn = setTimeout, clearTimeoutFn = clearTimeout }) {
   const timers = new Map();
 
   function schedule(id) {
@@ -35,5 +33,3 @@ function createUndoScheduler({ onFinalize, delayMs = DEFAULT_DELAY_MS, setTimeou
 
   return { schedule, cancel, cancelAll };
 }
-
-module.exports = { createUndoScheduler, DEFAULT_DELAY_MS };
