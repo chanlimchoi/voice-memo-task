@@ -9,7 +9,7 @@ describe('Onboarding', () => {
     const onDone = vi.fn();
     render(<Onboarding onDone={onDone} />);
 
-    expect(screen.getByText(/ramble into the mic/i)).toBeInTheDocument();
+    expect(screen.getByText(/blurt it out/i)).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Next' }));
     expect(screen.getByText(/nothing saves until you say so/i)).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Next' }));

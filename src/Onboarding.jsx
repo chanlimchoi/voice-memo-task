@@ -3,7 +3,7 @@ import { useState } from 'react';
 // Copy per Honey's pass — 3 short beats, skippable, straight to the record
 // button after, no tour beyond this.
 const BEATS = [
-  'Ramble into the mic. We’ll listen for the to-dos.',
+  'Blurt it out. We’ll listen for the to-dos.',
   'Nothing saves until you say so — review first.',
   'Ready when you are.',
 ];
