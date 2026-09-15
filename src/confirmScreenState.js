@@ -55,10 +55,18 @@ function undoNotATask(state, id) {
   };
 }
 
-// Actually drops pendingRemoval items — called once the undo toast's window
-// (e.g. 5s) elapses, or right before confirm() so nothing half-removed saves.
+// Actually drops pendingRemoval items — called right before confirm() so
+// nothing half-removed saves.
 function finalizeRemovals(state) {
   return { ...state, items: state.items.filter((item) => !item.pendingRemoval) };
+}
+
+// Drops a single pendingRemoval item once *its own* undo toast window
+// elapses. Deliberately scoped to one id rather than reusing
+// finalizeRemovals(): with multiple swipes in flight, one item's timer
+// firing must not sweep away other items still inside their own undo window.
+function finalizeRemoval(state, id) {
+  return { ...state, items: state.items.filter((item) => item.id !== id || !item.pendingRemoval) };
 }
 
 // What actually gets saved once the user taps "Looks good".
@@ -73,5 +81,6 @@ module.exports = {
   markNotATask,
   undoNotATask,
   finalizeRemovals,
+  finalizeRemoval,
   confirm,
 };

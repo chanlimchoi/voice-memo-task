@@ -9,6 +9,7 @@ const {
   markNotATask,
   undoNotATask,
   finalizeRemovals,
+  finalizeRemoval,
   confirm,
 } = require('./confirmScreenState');
 
@@ -58,6 +59,15 @@ test('finalizeRemovals actually drops pending items', () => {
   const finalized = finalizeRemovals(swiped);
   assert.equal(finalized.items.length, 1);
   assert.equal(finalized.items[0].task, 'Restock cat food');
+});
+
+test('finalizeRemoval drops only its own id, not other pending items still in their undo window', () => {
+  const state = buildConfirmState(extracted, { now: TUESDAY });
+  const bothSwiped = markNotATask(markNotATask(state, 'item-0'), 'item-1');
+  const afterOneTimerFires = finalizeRemoval(bothSwiped, 'item-0');
+  assert.equal(afterOneTimerFires.items.length, 1);
+  assert.equal(afterOneTimerFires.items[0].task, 'Restock cat food');
+  assert.equal(afterOneTimerFires.items[0].pendingRemoval, true, 'still awaiting its own timer');
 });
 
 test('confirm returns only surviving items, without internal id/pendingRemoval fields', () => {
